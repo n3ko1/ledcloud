@@ -46,15 +46,19 @@
 
                 Button:
                     text: 'Sunshine'
+                    on_press: root.sunshine();
 
                 Button:
                     text: 'Rain'
+                    on_press: root.rain();
 
                 Button:
                     text: 'Lightning'
+                    on_press: root.lightning();
 
                 Button:
                     text: 'Random'
+                    on_press: root.random();
 
                 Button:
                     on_press: root.show_popup();
@@ -62,6 +66,7 @@
 
                 Button:
                     text: 'Shutdown'
+                    on_press: root.shutdown();
 
             BoxLayout:
                 orientation: 'vertical'

@@ -4,15 +4,6 @@ from pprint import pprint
 
 class WeatherAPI:
     weatherAPIUrl = 'http://openweathermap.org/data/2.1/find/name?q=%s'
-    descriptions = { 'Sky is Clear': 1, 
-                     'few clouds': 2, 
-                     'scattered clouds': 3, 
-                     'broken clouds': 4,
-                     'shower rain': 5,
-                     'Rain': 6,
-                     'Thunderstorm': 7,
-                     'snow': 8,
-                     'mist': 9 }
 
     def __init__(self, cityName):
         data = urlopen(self.weatherAPIUrl % (cityName))
@@ -30,7 +21,7 @@ class WeatherAPI:
 
     def getWeatherCode(self):
         if hasattr(self, 'city'):
-            return self.descriptions[self.city['weather'][0]['description']]
+            return self.city['weather'][0]['id']
         return 0
         
     def getWeather(self):

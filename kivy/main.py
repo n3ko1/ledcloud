@@ -25,17 +25,32 @@ class RemoteLayout(FloatLayout):
     def weather_forecast(self, element):
         weather = WeatherAPI(self.city)
         if weather != None:
+            self.print_weather(weather)
+            print(weather.getWeather())
             print(weather.getWeatherCode())
             print(weather.getTemperature())
         else:
             self.city = 'stuttgart'
             weather = WeatherAPI(self.city)
+            self.print_weather(weather)
+            print(weather.getWeather())
             print(weather.getWeatherCode())
             print(weather.getTemperature())
         #r = requests.post(ip, params={'weatherCode':stuttgart.getWeatherCode()})
 
     def change_city(self, element, value):
         self.city = value
+
+    def print_weather(self, weather):
+        data = '%s at %s degrees' % ( weather.getWeather(), str(weather.getTemperature()) )
+        content = BoxLayout(orientation='vertical')
+        btnclose = Button(text='Done', size_hint_y=None, height='50dp')
+        content.add_widget(Label(text=data))
+        content.add_widget(btnclose)
+        popup = Popup(content=content, title='Weather forecast',
+                      size_hint=(None, None), size=('300dp', '300dp'))
+        btnclose.bind(on_release=popup.dismiss)
+        popup.open()
 
     def show_popup(self):
         btnclose = Button(text='Abort', size_hint_y=None, height='50dp')

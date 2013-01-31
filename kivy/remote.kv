@@ -1,0 +1,172 @@
+[HSeparator@Label]:
+    size_hint_y: None
+    height: max(45, self.texture_size[1] + 10)
+    text: ctx.text if 'text' in ctx else ''
+    text_size: self.width, None
+    valign: 'middle'
+    halign: 'center'
+    canvas.before:
+        Color:
+            rgba: .2, .2, .2, .8
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+<RemoteLayout>:
+    BoxLayout:
+        orientation: 'vertical'
+
+        BoxLayout:
+            padding: 10
+            spacing: 10
+            size_hint: 1, None
+            pos_hint: {'top': 1}
+            height: 44
+            Image:
+                size_hint: None, None
+                size: 24, 24
+                source: 'data/logo/kivy-icon-64.png'
+                mipmap: True
+            Label:
+                height: 24
+                text_size: self.width, None
+                color: (1, 1, 1, .8)
+                text: 'Remote LED Cloud Control'
+    
+        BoxLayout:
+            pos_hint: {'top': 1}
+
+            BoxLayout:
+                orientation: 'vertical'
+                padding: 10
+                spacing: 10
+
+                HSeparator:
+                    text: 'Control programmed modes'
+
+                Button:
+                    text: 'Sunshine'
+
+                Button:
+                    text: 'Rain'
+
+                Button:
+                    text: 'Lightning'
+
+                Button:
+                    text: 'Random'
+
+                Button:
+                    on_press: root.show_popup();
+                    text: 'Weather forecast'
+
+                Button:
+                    text: 'Shutdown'
+
+            BoxLayout:
+                orientation: 'vertical'
+                padding: 10
+                spacing: 10
+
+                HSeparator:
+                    text: 'Control individual LED colors (on/off)'
+
+                BoxLayout:
+                    orientation: 'horizontal'
+                    Label:
+                        height: '12dp'
+                        text_size: self.width, None
+                        color: (1, 1, 1, .8)
+                        text: 'Red 1'
+
+                    Switch:
+                        height: '24dp'
+                        on_active: root.setRSw(self.active);
+             
+                BoxLayout:
+                    orientation: 'horizontal'
+                    Label:
+                        height: '12dp'
+                        text_size: self.width, None
+                        color: (1, 1, 1, .8)
+                        text: 'White 1'
+
+                    Switch:
+                        height: '12dp'
+                        on_active: root.setWSw(self.active);
+
+                BoxLayout:
+                    orientation: 'horizontal'
+                    Label:
+                        height: '12dp'
+                        text_size: self.width, None
+                        color: (1, 1, 1, .8)
+                        text: 'Yellow 3/4'
+
+                    Switch:
+                        height: '24dp'
+                        on_active: root.setYSw(self.active);
+
+                BoxLayout:
+                    orientation: 'horizontal'
+                    Label:
+                        height: '12dp'
+                        text_size: self.width, None
+                        color: (1, 1, 1, .8)
+                        text: 'RGB Flash'
+
+                    Switch:
+                        height: '24dp'
+                        on_active: root.setRgbSw(self.active);
+
+                HSeparator:
+                    text: 'Control PWM LEDs'
+
+                Label:
+                    height: '12dp'
+                    text_size: self.width, None
+                    color: (1, 1, 1, .8)
+                    text: 'Red 2/3'                
+    
+                Slider:
+                    value: 0
+                    size_hint_y: None
+                    height: 50
+                    on_value: root.setRSl(self.value);
+
+                Label:
+                    height: '12dp'
+                    text_size: self.width, None
+                    color: (1, 1, 1, .8)
+                    text: 'Yellow 1/2'                
+    
+                Slider:
+                    value: 0
+                    size_hint_y: None
+                    height: 50
+                    on_value: root.setYSl(self.value);
+
+                Label:
+                    height: '12dp'
+                    text_size: self.width, None
+                    color: (1, 1, 1, .8)
+                    text: 'Green 1/2'                
+    
+                Slider:
+                    value: 0
+                    size_hint_y: None
+                    height: 50
+                    on_value: root.setGSl(self.value);
+
+                Label:
+                    height: '12dp'
+                    text_size: self.width, None
+                    color: (1, 1, 1, .8)
+                    text: 'Blue 1'                
+    
+                Slider:
+                    value: 0
+                    size_hint_y: None
+                    height: 50
+                    on_value: root.setBSl(self.value);
+                

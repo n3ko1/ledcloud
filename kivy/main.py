@@ -16,27 +16,29 @@ from kivy.uix.popup import Popup
 from kivy.properties import StringProperty
 from kivy.clock import Clock
 from weather import WeatherAPI
+from ard_socket import ArduinoSocket
 
-ip = '192.168.0.123'
+ip = '192.168.1.177'
 
 class RemoteLayout(FloatLayout):
     city = 'stuttgart'
+    ardSocket = ArduinoSocket(ip, 5000);
 
     def weather_forecast(self, element):
         weather = WeatherAPI(self.city)
-        if weather != None:
-            self.print_weather(weather)
-            print(weather.getWeather())
-            print(weather.getWeatherCode())
-            print(weather.getTemperature())
-        else:
-            self.city = 'stuttgart'
-            weather = WeatherAPI(self.city)
-            self.print_weather(weather)
-            print(weather.getWeather())
-            print(weather.getWeatherCode())
-            print(weather.getTemperature())
-        #r = requests.post(ip, params={'weatherCode':stuttgart.getWeatherCode()})
+        self.print_weather(weather)
+        print(weather.getWeather())
+        print(weather.getWeatherCode())
+        print(weather.getTemperature())
+        print(weather.getWeatherCategory())
+        category = weather.getWeatherCategory();
+        if category == weather.CODE_SUN:
+            self.ardSocket.sendPackage(self.ardSocket.SUNSHINE, 0)
+        if category == weather.CODE_RAIN:
+            self.ardSocket.sendPackage(self.ardSocket.RAIN, 0)
+        if category == weather.CODE_LIGHTNING:
+            self.ardSocket.sendPackage(self.ardSocket.LIGHTNING, 0)
+            
 
     def change_city(self, element, value):
         self.city = value
@@ -73,42 +75,67 @@ class RemoteLayout(FloatLayout):
 
     def sunshine(self):
         print "sunshine"
+        self.ardSocket.sendPackage(self.ardSocket.SUNSHINE, 0)
     
     def rain(self):
         print "rain"
+        self.ardSocket.sendPackage(self.ardSocket.RAIN, 0)
     
     def lightning(self):
         print "lightning"
+        self.ardSocket.sendPackage(self.ardSocket.LIGHTNING, 0)
     
     def random(self):
         print "random"
+        self.ardSocket.sendPackage(self.ardSocket.RANDOM, 0)
 
     def shutdown(self):
         print "shutdown"
+        self.ardSocket.sendPackage(self.ardSocket.SHUTDOWN, 0)
 
     def setRSl(self, value):
         print value
+        self.ardSocket.sendPackage(self.ardSocket.RED_PWM, value)
     
     def setYSl(self, value):
         print value
+        self.ardSocket.sendPackage(self.ardSocket.YELLOW_PWM, value)
 
     def setGSl(self, value):
         print value
+        self.ardSocket.sendPackage(self.ardSocket.GREEN_PWM, value)
 
     def setBSl(self, value):
         print value
+        self.ardSocket.sendPackage(self.ardSocket.BLUE_PWM, value)
 
     def setRSw(self, value):
         print value
+        if value:
+            self.ardSocket.sendPackage(self.ardSocket.RED, 100)
+        else:
+            self.ardSocket.sendPackage(self.ardSocket.RED, 0)
 
     def setWSw(self, value):
         print value
+        if value:
+            self.ardSocket.sendPackage(self.ardSocket.WHITE, 100)
+        else:
+            self.ardSocket.sendPackage(self.ardSocket.WHITE, 0)
 
     def setYSw(self, value):
         print value
+        if value:
+            self.ardSocket.sendPackage(self.ardSocket.YELLOW, 100)
+        else:
+            self.ardSocket.sendPackage(self.ardSocket.YELLOW, 0)
 
     def setRgbSw(self, value):
         print value
+        if value:
+            self.ardSocket.sendPackage(self.ardSocket.RGB, 100)
+        else:
+            self.ardSocket.sendPackage(self.ardSocket.RGB, 0)
 
 class RemoteApp(App):
 

@@ -46,28 +46,27 @@ class RemoteLayout(FloatLayout):
     def print_weather(self, weather):
         data = '%s at %s degrees' % ( weather.getWeather(), str(weather.getTemperature()) )
         content = BoxLayout(orientation='vertical')
-        btnclose = Button(text='Done', size_hint_y=None, height='50dp')
+        btnclose = Button(text='Done', size_hint_y=.4)
         content.add_widget(Label(text=data))
         content.add_widget(btnclose)
         popup = Popup(content=content, title='Weather forecast',
-                      size_hint=(None, None), size=('300dp', '300dp'))
+                      size_hint=(.4, .4))
         btnclose.bind(on_release=popup.dismiss)
         popup.open()
 
     def show_popup(self):
-        btnclose = Button(text='Abort', size_hint_y=None, height='50dp')
-        btngo = Button(text='Forecast', size_hint_y=None, height='50dp')
+        btnclose = Button(text='Abort', size_hint_y=.4)
+        btngo = Button(text='Forecast', size_hint_y=.4)
         ti = TextInput(
                 text='',
-                size_hint_y=None,
-                height='30dp')
+                size_hint_y=.4)
         content = BoxLayout(orientation='vertical')
         content.add_widget(Label(text='Enter a city'))
         content.add_widget(ti)
         content.add_widget(btngo)
         content.add_widget(btnclose)
         popup = Popup(content=content, title='Weather forecast',
-                      size_hint=(None, None), size=('300dp', '300dp'))
+                      size_hint=(.5, .5))
         btnclose.bind(on_release=popup.dismiss)
         btngo.bind(on_press=self.weather_forecast)
         ti.bind(text=self.change_city)
@@ -95,19 +94,23 @@ class RemoteLayout(FloatLayout):
 
     def setRSl(self, value):
         print value
-        self.ardSocket.sendPackage(self.ardSocket.RED_PWM, value)
+        if int(value) % 5 == 0:
+            self.ardSocket.sendPackage(self.ardSocket.RED_PWM, value)
     
     def setYSl(self, value):
         print value
-        self.ardSocket.sendPackage(self.ardSocket.YELLOW_PWM, value)
+        if int(value) % 5 == 0:
+            self.ardSocket.sendPackage(self.ardSocket.YELLOW_PWM, value)
 
     def setGSl(self, value):
         print value
-        self.ardSocket.sendPackage(self.ardSocket.GREEN_PWM, value)
+        if int(value) % 5 == 0:
+            self.ardSocket.sendPackage(self.ardSocket.GREEN_PWM, value)
 
     def setBSl(self, value):
         print value
-        self.ardSocket.sendPackage(self.ardSocket.BLUE_PWM, value)
+        if int(value) % 5 == 0:
+            self.ardSocket.sendPackage(self.ardSocket.BLUE_PWM, value)
 
     def setRSw(self, value):
         print value

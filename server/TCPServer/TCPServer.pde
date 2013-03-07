@@ -10,6 +10,10 @@ int ledYel = 7;
 int ledRGB = 8;
 int ledBluPWM = 9;
 
+int currentMode = 0;
+
+int currMil = 0;
+
 byte mac[] = { 
   0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 byte ip[] = { 
@@ -27,6 +31,7 @@ void setup()
   pinMode(ledYel, OUTPUT);
   pinMode(ledRGB, OUTPUT);
   pinMode(ledBluPWM, OUTPUT);
+  currMil = millis();
   Serial.begin(9600);
   Ethernet.begin(mac, ip);
   server.begin();
@@ -38,7 +43,6 @@ void loop()
   Client client = server.available();
   if (client) {
     String msg = "";
-    boolean currentLineIsBlank = true;
     while (client.connected()) {
       if (client.available()) {
         char c = client.read();
@@ -53,12 +57,22 @@ void loop()
             (msg.substring(4)).toCharArray(param, 5);
             Serial.println("Command is:"+msg.substring(0,4));
             Serial.println("Param is:"+msg.substring(4));
+            currentMode = atoi(cmd);
             controlCloud(atoi(cmd), atoi(param));
             Serial.println(atoi(cmd));
             Serial.println(atoi(param));
           }
           msg="";
         }
+      }
+      int now = millis();
+      Serial.println("prev");
+      Serial.println(currMil/1000);
+      Serial.println("now");
+      Serial.println(now/1000);
+      if(currentMode != 0 && currMil/1000 - now/1000 >= 5) {
+        updateAnimatedLight(currentMode);
+        currMil = millis();
       }
     }
     delay(1);
@@ -254,6 +268,7 @@ void controlCloud(int cmd, int params) {
 }
 
 void updateAnimatedLight(int lastCase) {
+  Serial.println("updateAnimatedLight");
   switch(lastCase) {
     //SUNSHINE
   case 11:
@@ -261,13 +276,54 @@ void updateAnimatedLight(int lastCase) {
 
     //RAIN
   case 12:
+    for(int j = 0; j<3; j++) {
+      int prev = analogRead(ledBluPWM) / 4;
+      int rand = random(100);
+      for(int i = 0; i<rand; i++) {
+        if(prev > 155) {
+          analogWrite(ledBluPWM, prev-i);
+        } 
+        else {
+          analogWrite(ledBluPWM, prev+i);
+        }
+        delay(50);
+      }
+    }
     break;
 
     //LIGHTNING
   case 13:
+    for(int i = 0; i<3; i++) {
+      delay(300+random(200));
+      digitalWrite(ledWhi, HIGH);
+      delay(50+random(200));
+      digitalWrite(ledWhi, LOW);
+      delay(300+random(200));
+      digitalWrite(ledWhi, HIGH);
+      delay(150+random(200));
+      digitalWrite(ledWhi, LOW);
+      delay(1000+random(200));
+      digitalWrite(ledRGB, HIGH);
+      delay(50+random(200));
+      digitalWrite(ledRGB, LOW);
+      delay(400+random(200));
+      digitalWrite(ledRGB, HIGH);
+      digitalWrite(ledWhi, HIGH);
+      delay(100+random(200));
+      digitalWrite(ledRGB, LOW);
+      digitalWrite(ledWhi, LOW);
+      delay(100+random(200));
+      digitalWrite(ledRGB, HIGH);
+      delay(50+random(200));
+      digitalWrite(ledRGB, LOW);
+    }
     break;
   }
 }
+
+
+
+
 
 
 

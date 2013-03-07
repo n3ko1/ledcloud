@@ -270,11 +270,7 @@ void controlCloud(int cmd, int params) {
 void updateAnimatedLight(int lastCase) {
   Serial.println("updateAnimatedLight");
   switch(lastCase) {
-    //SUNSHINE
-  case 11:
-    break; 
-
-    //RAIN
+  //RAIN
   case 12:
     for(int j = 0; j<3; j++) {
       int prev = analogRead(ledBluPWM) / 4;

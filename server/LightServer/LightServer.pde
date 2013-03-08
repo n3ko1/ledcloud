@@ -11,6 +11,7 @@ int ledRGB = 8;
 int ledBluPWM = 9;
 
 int currentMode = 0;
+int rainFadeIn = 0;
 
 int currMil = 0;
 
@@ -66,11 +67,7 @@ void loop()
         }
       }
       int now = millis();
-      Serial.println("prev");
-      Serial.println(currMil/1000);
-      Serial.println("now");
-      Serial.println(now/1000);
-      if(currentMode != 0 && currMil/1000 - now/1000 >= 5) {
+      if(currentMode != 0 && now - currMil >= 5000) {
         updateAnimatedLight(currentMode);
         currMil = millis();
       }
@@ -270,22 +267,25 @@ void controlCloud(int cmd, int params) {
 void updateAnimatedLight(int lastCase) {
   Serial.println("updateAnimatedLight");
   switch(lastCase) {
-  //RAIN
-  case 12:
-    for(int j = 0; j<3; j++) {
-      int prev = analogRead(ledBluPWM) / 4;
-      int rand = random(100);
-      for(int i = 0; i<rand; i++) {
-        if(prev > 155) {
-          analogWrite(ledBluPWM, prev-i);
+    //RAIN
+  case 12: 
+    {
+      for(int i = 0; i<200; i++) {
+        if(rainFadeIn == 0) {
+          analogWrite(ledBluPWM, 200-i);
         } 
         else {
-          analogWrite(ledBluPWM, prev+i);
+          analogWrite(ledBluPWM, i);
         }
         delay(50);
       }
+      if(rainFadeIn == 0) {
+        rainFadeIn = 1;
+      } else {
+        rainFadeIn = 0;
+      }
+      break;
     }
-    break;
 
     //LIGHTNING
   case 13:
@@ -316,6 +316,7 @@ void updateAnimatedLight(int lastCase) {
     break;
   }
 }
+
 
 
 

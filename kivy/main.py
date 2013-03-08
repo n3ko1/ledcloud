@@ -92,6 +92,10 @@ class RemoteLayout(FloatLayout):
         print "shutdown"
         self.ardSocket.sendPackage(self.ardSocket.SHUTDOWN, 0)
 
+    def reconnect(self):
+        self.ardSocket.close()
+        self.ardSocket = ArduinoSocket(ip, 5000);
+
     def setRSl(self, value):
         print value
         if int(value) % 5 == 0:

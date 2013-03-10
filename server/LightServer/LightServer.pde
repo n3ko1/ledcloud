@@ -13,8 +13,11 @@ int ledBluPWM = 9;
 int currentMode = 0;
 int rainFadeIn = 0;
 
+int musicFast = 0;
+int beatCount = 0;
+
 int currMil = 0;
-float updateInterval = 5000;
+float updateInterval = 3000;
 
 byte mac[] = { 
   0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
@@ -61,7 +64,7 @@ void loop()
             Serial.println("Param is:"+msg.substring(4));
             currentMode = atoi(cmd);
             if(currentMode != 15) {
-              updateInterval = 5000;
+              updateInterval = 3000;
             }
             controlCloud(atoi(cmd), atoi(param));
             Serial.println(atoi(cmd));
@@ -303,9 +306,9 @@ void updateAnimatedLight(int lastCase) {
     //RAIN
   case 12: 
     {
-      for(int i = 0; i<200; i++) {
+      for(int i = 0; i<150; i++) {
         if(rainFadeIn == 0) {
-          analogWrite(ledBluPWM, 200-i);
+          analogWrite(ledBluPWM, 150-i);
         } 
         else {
           analogWrite(ledBluPWM, i);
@@ -330,7 +333,7 @@ void updateAnimatedLight(int lastCase) {
       digitalWrite(ledWhi, LOW);
       delay(300+random(200));
       digitalWrite(ledWhi, HIGH);
-      delay(150+random(200));
+      delay(100+random(200));
       digitalWrite(ledWhi, LOW);
       delay(1000+random(200));
       digitalWrite(ledRGB, HIGH);
@@ -339,7 +342,7 @@ void updateAnimatedLight(int lastCase) {
       delay(400+random(200));
       digitalWrite(ledRGB, HIGH);
       digitalWrite(ledWhi, HIGH);
-      delay(100+random(200));
+      delay(50+random(200));
       digitalWrite(ledRGB, LOW);
       digitalWrite(ledWhi, LOW);
       delay(100+random(200));
@@ -363,9 +366,6 @@ void updateAnimatedLight(int lastCase) {
       digitalWrite(ledWhi, HIGH);
     }
     if(random(200) > 100) {
-      digitalWrite(ledRGB, HIGH);
-    }
-    if(random(200) > 100) {
       digitalWrite(ledYel, HIGH);
     }
     if(random(200) > 100) {
@@ -375,15 +375,24 @@ void updateAnimatedLight(int lastCase) {
     analogWrite(ledYelPWM, random(205));
     analogWrite(ledRedPWM, random(205));
     analogWrite(ledGrePWM, random(205));
-    int rand = random(100);
-    /*if(rand > 90) {
-      updateInterval = updateInterval * 2.0;
-    } else if (rand > 80 && rand <= 90) {
-      updateInterval = updateInterval * 0.5;
-    }*/
+    digitalWrite(ledRGB, HIGH);
+    delay(25);
+    digitalWrite(ledRGB,LOW);
+    if(beatCount % 8 == 0) {
+      if(musicFast == 0) {
+        updateInterval = updateInterval * 0.25;
+        musicFast = 1;
+      } 
+      else {
+        updateInterval = updateInterval * 4.0;
+        musicFast = 0;
+      }
+    }
+    beatCount++;
     break;
   }
 }
+
 
 
 

@@ -363,9 +363,6 @@ void updateAnimatedLight(int lastCase) {
     digitalWrite(ledGrePWM, LOW);
     digitalWrite(ledYel, LOW);
     if(random(200) > 100) {
-      digitalWrite(ledWhi, HIGH);
-    }
-    if(random(200) > 100) {
       digitalWrite(ledYel, HIGH);
     }
     if(random(200) > 100) {
@@ -376,8 +373,10 @@ void updateAnimatedLight(int lastCase) {
     analogWrite(ledRedPWM, random(205));
     analogWrite(ledGrePWM, random(205));
     digitalWrite(ledRGB, HIGH);
+    digitalWrite(ledWhi, HIGH);
     delay(25);
     digitalWrite(ledRGB,LOW);
+    digitalWrite(ledWhi, LOW);
     if(beatCount % 8 == 0) {
       if(musicFast == 0) {
         updateInterval = updateInterval * 0.25;

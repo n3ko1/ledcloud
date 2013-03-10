@@ -11,17 +11,19 @@ config.ECHO_NEST_API_KEY="7F6SMSDFUDAQE3QAJ"
 
 mp3 = sys.argv[1]
 frommp3 = subprocess.Popen(['mpg123', '-w', '-', mp3], stdout=subprocess.PIPE)
-toogg = subprocess.call(['oggenc', '-'], stdin=frommp3.stdout, stdout=open('temp.ogg', 'wb'))
+toogg = subprocess.Popen(['oggenc', '-'], stdin=frommp3.stdout, stdout=open('temp.ogg', 'wb'))
 
-ip = '192.168.0.177'
-    
-audio_file = audio.LocalAudioFile("temp.ogg")
+audio_file = audio.LocalAudioFile(mp3)
 bpm = audio_file.analysis.tempo
 print bpm
 print "track has %d bpm." % (bpm['value'])
 
+toogg.wait()
+
+ip = '192.168.0.177'
+
 pygame.init()
-screen = pygame.display.set_mode((400, 300))
+screen = pygame.display.set_mode((1024, 768))
 done = False
 x = 30
 y = 30
@@ -54,8 +56,8 @@ while not done:
 	font = pygame.font.Font(None, 36)
 	text = font.render(mp3, 1, (10, 10, 10))
 	textpos = text.get_rect()
-	textpos.centerx = background.get_rect().centerx
-	background.blit(text, textpos)
+	textpos.centerx = screen.get_rect().centerx
+	screen.blit(text, textpos)
         
         pygame.display.flip()
         clock.tick(60)

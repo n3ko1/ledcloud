@@ -14,11 +14,12 @@ int currentMode = 0;
 int rainFadeIn = 0;
 
 int currMil = 0;
+float updateInterval = 5000;
 
 byte mac[] = { 
   0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 byte ip[] = { 
-  192,168,1, 177 };
+  192,168,0, 177 };
 
 Server server(5000);
 
@@ -59,6 +60,9 @@ void loop()
             Serial.println("Command is:"+msg.substring(0,4));
             Serial.println("Param is:"+msg.substring(4));
             currentMode = atoi(cmd);
+            if(currentMode != 15) {
+              updateInterval = 5000;
+            }
             controlCloud(atoi(cmd), atoi(param));
             Serial.println(atoi(cmd));
             Serial.println(atoi(param));
@@ -67,7 +71,7 @@ void loop()
         }
       }
       int now = millis();
-      if(currentMode != 0 && now - currMil >= 5000) {
+      if(currentMode != 0 && now - currMil >= updateInterval) {
         updateAnimatedLight(currentMode);
         currMil = millis();
       }
@@ -250,6 +254,35 @@ void controlCloud(int cmd, int params) {
 
     break;
 
+    //MUSIC
+  case 15:
+    digitalWrite(ledBluPWM, LOW);
+    digitalWrite(ledYelPWM, LOW);
+    digitalWrite(ledRedPWM, LOW);
+    digitalWrite(ledRGB, LOW);
+    digitalWrite(ledRed, LOW);
+    digitalWrite(ledWhi, LOW);
+    digitalWrite(ledGrePWM, LOW);
+    digitalWrite(ledYel, LOW);
+    if(random(200) > 100) {
+      digitalWrite(ledWhi, HIGH);
+    }
+    if(random(200) > 100) {
+      digitalWrite(ledRGB, HIGH);
+    }
+    if(random(200) > 100) {
+      digitalWrite(ledYel, HIGH);
+    }
+    if(random(200) > 100) {
+      digitalWrite(ledRed, HIGH);
+    }
+    analogWrite(ledBluPWM, random(255));
+    analogWrite(ledYelPWM, random(255));
+    analogWrite(ledRedPWM, random(255));
+    analogWrite(ledGrePWM, random(255));
+    updateInterval = 60000.0 / params;
+    break;
+
     //SHUTDOWN
   case 21:
     digitalWrite(ledBluPWM, LOW);
@@ -281,7 +314,8 @@ void updateAnimatedLight(int lastCase) {
       }
       if(rainFadeIn == 0) {
         rainFadeIn = 1;
-      } else {
+      } 
+      else {
         rainFadeIn = 0;
       }
       break;
@@ -314,8 +348,43 @@ void updateAnimatedLight(int lastCase) {
       digitalWrite(ledRGB, LOW);
     }
     break;
+
+    //MUSIC
+  case 15:
+    digitalWrite(ledBluPWM, LOW);
+    digitalWrite(ledYelPWM, LOW);
+    digitalWrite(ledRedPWM, LOW);
+    digitalWrite(ledRGB, LOW);
+    digitalWrite(ledRed, LOW);
+    digitalWrite(ledWhi, LOW);
+    digitalWrite(ledGrePWM, LOW);
+    digitalWrite(ledYel, LOW);
+    if(random(200) > 100) {
+      digitalWrite(ledWhi, HIGH);
+    }
+    if(random(200) > 100) {
+      digitalWrite(ledRGB, HIGH);
+    }
+    if(random(200) > 100) {
+      digitalWrite(ledYel, HIGH);
+    }
+    if(random(200) > 100) {
+      digitalWrite(ledRed, HIGH);
+    }
+    analogWrite(ledBluPWM, random(205));
+    analogWrite(ledYelPWM, random(205));
+    analogWrite(ledRedPWM, random(205));
+    analogWrite(ledGrePWM, random(205));
+    int rand = random(100);
+    /*if(rand > 90) {
+      updateInterval = updateInterval * 2.0;
+    } else if (rand > 80 && rand <= 90) {
+      updateInterval = updateInterval * 0.5;
+    }*/
+    break;
   }
 }
+
 
 
 

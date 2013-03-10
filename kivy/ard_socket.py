@@ -15,6 +15,7 @@ class ArduinoSocket:
     RAIN = 12
     LIGHTNING = 13
     RANDOM = 14
+    MUSIC = 15
     
     SHUTDOWN = 21
 

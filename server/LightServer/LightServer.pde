@@ -22,7 +22,7 @@ float updateInterval = 3000;
 byte mac[] = { 
   0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 byte ip[] = { 
-  192,168,0, 177 };
+  192,168,1, 177 };
 
 Server server(5000);
 

@@ -19,7 +19,7 @@ print "track has %d bpm." % (bpm)
 
 toogg.wait()
 
-ip = '192.168.0.177'
+ip = '192.168.1.177'
 sock = None
 
 pygame.init()

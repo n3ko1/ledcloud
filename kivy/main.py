@@ -18,7 +18,7 @@ from kivy.clock import Clock
 from weather import WeatherAPI
 from ard_socket import ArduinoSocket
 
-ip = '192.168.0.177'
+ip = '192.168.1.177'
 
 class RemoteLayout(FloatLayout):
     city = 'stuttgart'

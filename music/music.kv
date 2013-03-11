@@ -1,0 +1,88 @@
+[HSeparator@Label]:
+    size_hint_y: None
+    height: max(45, self.texture_size[1] + 10)
+    text: ctx.text if 'text' in ctx else ''
+    text_size: self.width, None
+    valign: 'middle'
+    halign: 'center'
+    canvas.before:
+        Color:
+            rgba: .2, .2, .2, .8
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+<MusicLayout>:
+    BoxLayout:
+        orientation: 'vertical'
+
+        BoxLayout:
+            padding: 10
+            spacing: 10
+            size_hint: 1, None
+            pos_hint: {'top': 1}
+            height: 44
+            Image:
+                size_hint: None, None
+                size: 24, 24
+                source: 'data/logo/kivy-icon-64.png'
+                mipmap: True
+            Label:
+                height: 24
+                text_size: self.width, None
+                color: (1, 1, 1, .8)
+                text: 'Remote LED Cloud Music Player'
+
+        BoxLayout:
+            Button:
+                text: 'Load Music'
+                on_press: root.show_load();
+
+        BoxLayout:
+            Button:
+                text: 'Start Playback'
+                on_press: root.startMusic();
+
+        BoxLayout:
+            Button:
+                text: 'Pause'
+                on_press: root.pauseMusic();
+            Button:
+                text: 'Play'
+                on_press: root.unpauseMusic();
+
+        BoxLayout:
+            Button:
+                text: 'Stop Playback'
+                on_press: root.stopMusic();
+    
+        BoxLayout:
+            height: 24
+
+            Button:
+                text: 'Shutdown'
+                on_press: root.shutdown();
+		
+            Button:
+                text: 'Reconnect'
+                on_press: root.reconnect();
+
+<LoadDialog>:
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        FileChooserListView:
+            id: filechooser
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "Cancel"
+                on_release: root.cancel()
+
+            Button:
+                text: "Load"
+                on_release: root.load(filechooser.path, filechooser.selection)
+                

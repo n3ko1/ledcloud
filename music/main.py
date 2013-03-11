@@ -40,11 +40,13 @@ class MusicLayout(FloatLayout):
         popup.open()
         
     def load(self, path, filename):
-        if filename[0]:
+        try:
             print path
             print filename
             pb = ProgressBar(max=1000)
             self.ardMusic = ArduinoMusic(os.path.join(path, filename[0]), self.ardSocket)
+        except:
+            pass
         self.dismiss_popup()
 
     def startMusic(self):
@@ -67,7 +69,7 @@ class MusicLayout(FloatLayout):
 
     def unpauseMusic(self):
         if hasattr(self,'ardMusic'):
-            self.ardMusic.unpause()
+            self.ardMusic.play()
         else:
             self.show_warning()
 

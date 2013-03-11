@@ -31,12 +31,12 @@ class ArduinoMusic:
 
     def stop(self):
         pygame.mixer.music.stop()
-        self.sock.sendPackage(sock.RANDOM, 0)
+        self.sock.sendPackage(self.sock.RANDOM, 0)
 
     def play(self):
         pygame.mixer.music.unpause()
-        self.sock.sendPackage(sock.MUSIC, bpm)
+        self.sock.sendPackage(self.sock.MUSIC, self.bpm)
 
     def pause(self):
         pygame.mixer.music.pause()
-        self.sock.sendPackage(sock.RANDOM, 0)
+        self.sock.sendPackage(self.sock.RANDOM, 0)
